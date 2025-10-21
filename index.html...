@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDA Achievement Hub</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind to use Inter font and custom colors -->
+    <script>
+        // --- JAVASCRIPT CONFIGURATION BLOCK (PART OF CSS/HTML SETUP) ---
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kda-blue': '#1e3a8a', // Dark Blue for primary
+                        'kda-gold': '#facc15', // Gold/Yellow for accent
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- --- CSS STYLESHEET BLOCK --- -->
+    <style>
+        /* Custom styles for professional appearance */
+        .achievement-card {
+            /* Smooth transition for hover effect */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .achievement-card:hover {
+            /* Slight lift and enhanced shadow on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.1), 0 4px 6px -2px rgba(30, 58, 138, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- --- HTML STRUCTURE BLOCK --- -->
+
+    <!-- Header -->
+    <header class="bg-kda-blue shadow-lg">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">
+                KDA Spotlight <span class="text-kda-gold text-4xl">★</span>
+            </h1>
+            <!-- Simple Navigation Mock -->
+            <nav class="hidden md:flex space-x-4">
+                <a href="#" class="text-white hover:text-kda-gold transition duration-150 p-2 rounded-lg">Home</a>
+                <a href="#" class="text-white hover:text-kda-gold transition duration-150 p-2 rounded-lg">News & Updates</a>
+                <a href="#" class="bg-kda-gold text-kda-blue font-semibold px-4 py-2 rounded-xl hover:bg--400 transition duration-150">Admin Panel</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto mt-8 p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Left Column: Filters and Search -->
+        <aside class="lg:col-span-1">
+            <div id="filter-panel" class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 sticky top-4">
+                <h2 class="text-xl font-bold text-kda-blue mb-4 border-b pb-2">Filter Achievements</h2>
+                
+                <!-- Search Input -->
+                <div class="mb-4">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Keywords</label>
+                    <input type="text" id="search" placeholder="E.g., Chess, Leadership, Science"
+                           class="w-full p-2 border border-gray-300 rounded-lg focus:ring-kda-gold focus:border-kda-gold">
+                </div>
+
+                <!-- Category Filter -->
+                <div class="mb-4">
+                    <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="category-filter" class="w-full p-2 border border-gray-300 rounded-lg bg-white focus:ring-kda-gold focus:border-kda-gold">
+                        <option value="">All Categories</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Arts & Culture">Arts & Culture</option>
+                        <option value="Leadership">Leadership</option>
+                        <option value="Community Service">Community Service</option>
+                    </select>
+                </div>
+
+                <!-- Year Group Filter (Mock) -->
+                <div class="mb-4">
+                    <label for="grade-filter" class="block text-sm font-medium text-gray-700 mb-1">Grade Level</label>
+                    <select id="grade-filter" class="w-full p-2 border border-gray-300 rounded-lg bg-white focus:ring-kda-gold focus:border-kda-gold">
+                        <option value="">All Grades</option>
+                        <option value="12">Grade 12</option>
+                        <option value="11">Grade 11</option>
+                        <option value="10">Grade 10</option>
+                        <option value="9">Grade 9</option>
+                    </select>
+                </div>
+                
+                <button onclick="applyFilters()" class="w-full bg-kda-blue text-white font-semibold py-2 rounded-lg hover:bg-blue-800 transition duration-150 mt-2">
+                    Apply Filters
+                </button>
+                <button onclick="resetFilters()" class="w-full text-kda-blue border border-kda-blue font-semibold py-2 rounded-lg hover:bg-gray-100 transition duration-150 mt-2">
+                    Reset
+                </button>
+            </div>
+        </aside>
+
+        <!-- Right Column: Achievement Grid -->
+        <section class="lg:col-span-3">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Recent Achievements</h2>
+            
+            <!-- Achievement Cards Grid -->
+            <div id="achievement-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Achievement cards will be inserted here by JavaScript -->
+            </div>
+
+            <!-- No Results Message -->
+            <div id="no-results" class="hidden bg-yellow-50 border-l-4 border-kda-gold text-yellow-800 p-4 rounded-lg shadow-md mt-8">
+                <p class="font-medium">No results found.</p>
+                <p class="text-sm">Try adjusting your filters or search terms.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Achievement Detail Modal -->
+    <div id="detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+            <div id="modal-content" class="p-6">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="p-4 border-t flex justify-end">
+                <button onclick="closeModal()" class="bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-xl hover:bg-gray-300 transition duration-150">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- --- JAVASCRIPT LOGIC BLOCK --- -->
+    <script>
+        // Use a function to safely access global variables (optional for this demo)
+        const __app_id = typeof window.__app_id !== 'undefined' ? window.__app_id : 'kda-achievement-hub';
+
+        // --- MOCK DATA (Replace with Firestore/API calls in a real application) ---
+        const achievements = [
+            { id: 1, title: "National Debate Champions", student: "Alice Chen, Ben Lee", category: "Academic", date: "2024-10-15", grade: 12, description: "The KDA Debate Team secured first place at the National High School Debate Championship. Their arguments on climate policy were unparalleled and demonstrated high-level critical thinking and persuasive communication skills. They defeated teams from 32 different states!", imgUrl: "https://placehold.co/400x250/1e40af/ffffff?text=DEBATE+WINNERS", profileId: "alice-c" },
+            { id: 2, title: "State Track & Field Gold", student: "Marcus 'The Flash' Jones", category: "Sports", date: "2024-09-28", grade: 11, description: "Marcus set a new state record in the 100m dash, finishing the race in an astonishing 10.4 seconds. His dedication to training has truly paid off, bringing immense pride to KDA athletics.", imgUrl: "https://placehold.co/400x250/22c55e/ffffff?text=TRACK+CHAMPION", profileId: "marcus-j" },
+            { id: 3, title: "Published Poetry Collection", student: "Sofia Ramirez", category: "Arts & Culture", date: "2024-09-20", grade: 10, description: "Sofia's debut poetry collection, 'Echoes of the City', has been published by a regional press. Her work explores themes of identity and community, showcasing remarkable literary talent.", imgUrl: "https://placehold.co/400x250/f97316/ffffff?text=POETRY+BOOK", profileId: "sofia-r" },
+            { id: 4, title: "Robotics Club Innovation Award", student: "Team Alpha (4 students)", category: "Academic", date: "2024-10-01", grade: 11, description: "The Robotics Club won the 'Most Innovative Design' award at the Regional Tech Fair for their automated recycling sorting machine, demonstrating practical engineering skills.", imgUrl: "https://placehold.co/400x250/9333ea/ffffff?text=ROBOTICS+TEAM", profileId: "team-a" },
+            { id: 5, title: "School Board Student Representative", student: "Chloe O'Connell", category: "Leadership", date: "2024-08-30", grade: 12, description: "Chloe was elected by her peers to serve as the Student Representative on the School Board, a testament to her strong leadership and commitment to student advocacy.", imgUrl: "https://placehold.co/400x250/facc15/1e3a8a?text=LEADER+CHLOE", profileId: "chloe-o" },
+            { id: 6, title: "100 Hours Community Cleanup", student: "Volunteer Squad (8 students)", category: "Community Service", date: "2024-10-10", grade: 9, description: "A group of freshmen dedicated over 100 collective hours to the 'Adopt-A-Park' cleanup initiative, making a significant positive impact on our local environment.", imgUrl: "https://placehold.co/400x250/059669/ffffff?text=VOLUNTEER+SQUAD", profileId: "v-squad" },
+        ];
+        // --- END MOCK DATA ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAchievements(achievements);
+            // Attach event listeners to filter inputs
+            document.getElementById('search').addEventListener('input', applyFilters);
+            document.getElementById('category-filter').addEventListener('change', applyFilters);
+            document.getElementById('grade-filter').addEventListener('change', applyFilters);
+        });
+
+        // Function to create the HTML for a single achievement card
+        function createAchievementCard(item) {
+            return `
+                <div class="achievement-card bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                    <img src="${item.imgUrl}" alt="${item.title}" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <span class="inline-block bg-kda-gold text-kda-blue text-xs font-semibold px-3 py-1 rounded-full mb-2">${item.category}</span>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${item.title}</h3>
+                        <p class="text-gray-600 mb-3">
+                            <strong class="text-kda-blue">${item.student}</strong> <br/>
+                            <span class="text-sm">Grade ${item.grade} | ${item.date}</span>
+                        </p>
+                        <div class="flex justify-between space-x-2 mt-4">
+                            <button onclick="showDetails(${item.id})" class="flex-1 bg-kda-blue text-white text-sm font-medium py-2 px-3 rounded-lg hover:bg-blue-800 transition duration-150">
+                                View Full Story
+                            </button>
+                            <a href="#" class="flex-1 text-center border border-kda-blue text-kda-blue text-sm font-medium py-2 px-3 rounded-lg hover:bg-gray-50 transition duration-150">
+                                View Profile (Mock)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to render the filtered achievements
+        function renderAchievements(filteredData) {
+            const listContainer = document.getElementById('achievement-list');
+            const noResults = document.getElementById('no-results');
+            listContainer.innerHTML = ''; // Clear existing content
+
+            if (filteredData.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filteredData.forEach(item => {
+                    listContainer.innerHTML += createAchievementCard(item);
+                });
+            }
+        }
+        
+        // Main filtering logic
+        function applyFilters() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const grade = document.getElementById('grade-filter').value;
+
+            const filtered = achievements.filter(item => {
+                // 1. Keyword Search
+                const matchesSearch = item.title.toLowerCase().includes(searchTerm) ||
+                                      item.student.toLowerCase().includes(searchTerm) ||
+                                      item.description.toLowerCase().includes(searchTerm);
+
+                // 2. Category Filter
+                const matchesCategory = category === "" || item.category === category;
+                
+                // 3. Grade Filter
+                const matchesGrade = grade === "" || item.grade.toString() === grade;
+
+                return matchesSearch && matchesCategory && matchesGrade;
+            });
+
+            renderAchievements(filtered);
+        }
+        
+        // Reset filters helper
+        function resetFilters() {
+            document.getElementById('search').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('grade-filter').value = '';
+            applyFilters();
+        }
+
+        // Modal functions
+        function showDetails(id) {
+            const item = achievements.find(a => a.id === id);
+            if (!item) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex items-center space-x-4 mb-4">
+                    <h2 class="text-3xl font-extrabold text-kda-blue">${item.title}</h2>
+                    <span class="text-lg text-kda-gold">🌟</span>
+                </div>
+                <img src="${item.imgUrl}" alt="${item.title}" class="w-full max-h-64 object-cover rounded-xl mb-4">
+                
+                <div class="space-y-2 text-gray-700 mb-6">
+                    <p><strong>Student(s):</strong> <span class="text-kda-blue">${item.student}</span></p>
+                    <p><strong>Category:</strong> <span class="font-medium">${item.category}</span></p>
+                    <p><strong>Date Achieved:</strong> ${item.date}</p>
+                    <p><strong>Grade Level:</strong> Grade ${item.grade}</p>
+                </div>
+
+                <p class="text-lg leading-relaxed text-gray-800">${item.description}</p>
+                
+                <div class="mt-6 pt-4 border-t flex justify-end space-x-3">
+                    <button class="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600">Share on X (Mock)</button>
+                    <button class="bg-indigo-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-indigo-600">Share on FB (Mock)</button>
+                </div>
+            `;
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.getElementById('detail-modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.getElementById('detail-modal').classList.remove('flex');
+        }
+    </script>
+
+</body>
+</html>
